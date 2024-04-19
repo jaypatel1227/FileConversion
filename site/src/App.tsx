@@ -37,12 +37,11 @@ function DeleteButton() {
   )
 }
 
-function GetAPICall() {
-  fetch('http://localhost:5001/', {
-    method: "GET"
-  })
-    .then(response => response.json())
-    .then(data => console.log(data));
+async function GetAPICall() {
+  const resp = await fetch('http://localhost:5001/');
+  const body = resp.body;
+  console.log(resp.text());
+  alert(body);
 }
 
 function PostAPICall() {
@@ -50,7 +49,7 @@ function PostAPICall() {
     method: "POST",
     body: "this is what I want you to echo."
   })
-    .then(response => response.json())
+    .then(response => response.text())
     .then(data => console.log(data));
 }
 export default App;
