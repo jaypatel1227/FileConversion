@@ -1,39 +1,37 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
-use serde::{Deserialize, Serialize};
-mod service;
+use serde::Deserialize;
 use std::fs::File;
 use std::path::Path;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "PascalCase")]
 struct ServerConfig {
     service_name: String,
-    available_services: Vec<AvialableService>,
+    available_name: Vec<AvialableService>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "PascalCase")]
 struct AvialableService {
     name: String,
     service_func_name: String,
 }
 
 fn get_server_config() -> ServerConfig {
-    let server_config = Path::new("../server.config");
-    let file = File::open(server_config)
-        .expect("No server.config not found at the top level of the project");
+    let SERVER_CONFIG_NAME = Path::new("../../server.config");
+    let file =
+        File::open(SERVER_CONFIG_NAME).expect("No server.config not found at the specified path.");
 
     let json: ServerConfig =
         serde_json::from_reader(file).expect("The Server's JSON config is malformed");
-
     return json;
 }
 
-#[get("/available_options")]
-async fn get_options() -> impl Responder {
+#[get("/")]
+async fn hello() -> impl Responder {
     HttpResponse::Ok()
-        .insert_header(("Access-Control-Allow-Origin", "*")) // to stop CORS error when running the
-        // site and service from the same domain (such as localhost)
-        .json(get_server_config())
-    // Ok(web::Json(get_server_config().into()));
+        .insert_header(("Access-Control-Allow-Origin", "*"))
+        .body("Hello world!")
 }
 
 #[post("/echo")]
@@ -51,7 +49,7 @@ async fn manual_hello() -> impl Responder {
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
-            .service(get_options)
+            .service(hello)
             .service(echo)
             .route("/hey", web::get().to(manual_hello))
     })
