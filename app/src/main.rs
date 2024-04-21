@@ -65,7 +65,7 @@ async fn convert_file(
 
     while let Ok(Some(mut field)) = payload.try_next().await {
         let field_type = field.content_disposition().get_name().unwrap();
-        if field_type == "file" {
+        if field_type != "file" {
             continue;
         }
         filename = format!(
@@ -111,7 +111,11 @@ async fn convert_file(
     match matching_service {
         None => return Ok(HttpResponse::BadRequest().body("Invalid Conversion Request!")),
         Some(service_info) => {
-            let converted_file = service::call(service_info.service_func_name, filename.clone());
+            dbg!(filename.clone());
+            let converted_file = service::call(
+                service_info.service_func_name,
+                format!("{}{}", "./input/", filename),
+            );
 
             // dbg!(service_info.service_func_name.clone());
             dbg!(service_info.name.clone());
