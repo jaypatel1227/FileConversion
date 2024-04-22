@@ -1,16 +1,48 @@
-// import * as React from 'react'
-// import { useRef, useState } from 'react'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
+import { ICardProps, CardTable } from "./CardTable";
 
 function App() {
 
+  // <div>
+  //   <GetButton />
+  //   <PostButton />
+  //   <PutButton />
+  //   <DeleteButton />
+  // </div>
+  return (
+    <AvailableServices />
+  )
+}
+
+interface IServices {
+  service_name?: string;
+  available_services?: ICardProps[];
+}
+
+
+const AvailableServices: React.FC = () => {
+  const [services, setServices] = useState<IServices>({});
+  useEffect(() => {
+    const fetchData = async () => {
+      const resp = await fetch('http://localhost:5001/available_options', { method: "GET", });
+
+      if (!resp.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await resp.json();
+      setServices(result);
+    };
+    fetchData();
+  }, []);
+
   return (
     <div>
-      <GetButton />
-      <PostButton />
-      <PutButton />
-      <DeleteButton />
+      <div className='appHeader'> {services.service_name}</div>
+      <CardTable cards={services.available_services ?? []} />
     </div>
-  )
+  );
 }
 
 function GetButton() {

@@ -20,6 +20,7 @@ struct ServerConfig {
 struct AvialableService {
     name: String,
     service_func_name: String,
+    description: String,
 }
 
 #[derive(Debug, Serialize)]
