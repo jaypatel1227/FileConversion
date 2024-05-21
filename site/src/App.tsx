@@ -1,15 +1,10 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { ICardProps, CardTable } from "./CardTable";
+import "./App.css";
 
 function App() {
 
-  // <div>
-  //   <GetButton />
-  //   <PostButton />
-  //   <PutButton />
-  //   <DeleteButton />
-  // </div>
   return (
     <AvailableServices />
   )
@@ -18,6 +13,7 @@ function App() {
 interface IServices {
   service_name?: string;
   available_services?: ICardProps[];
+  is_unavailable?: boolean;
 }
 
 
@@ -25,63 +21,32 @@ const AvailableServices: React.FC = () => {
   const [services, setServices] = useState<IServices>({});
   useEffect(() => {
     const fetchData = async () => {
-      const resp = await fetch('http://localhost:5001/available_options', { method: "GET", });
-
-      if (!resp.ok) {
-        throw new Error('Network response was not ok');
+      try {
+        const resp = await fetch('http://localhost:5001/available_options', { method: "GET", });
+        const result = await resp.json();
+        setServices(result);
       }
-
-      const result = await resp.json();
-      setServices(result);
+      catch (e) {
+        setServices({ is_unavailable: true });
+      }
     };
     fetchData();
   }, []);
 
+  if (services.is_unavailable) {
+    return (
+      <div className='_appHeader _unavaiblableService'>
+        The file conversion service appears to be down. Please try again later.
+      </div>
+    );
+  }
+
   return (
     <div>
-      <div className='appHeader'> {services.service_name}</div>
+      <div className='_appHeader'> {services.service_name}</div>
       <CardTable cards={services.available_services ?? []} />
     </div>
   );
 }
 
-function GetButton() {
-  return (
-    <button id="getbutton" title='GET' onClick={GetAPICall}> GET REQUEST </button>
-  )
-}
-
-function PostButton() {
-  return (
-    <button id="postbutton" title='POST' onClick={PostAPICall}> POST REQUEST </button>
-  )
-}
-
-function PutButton() {
-  return (
-    <button id="putbutton" title='PUT'> PUT REQUEST </button>
-  )
-}
-
-function DeleteButton() {
-  return (
-    <button id="deletebutton" title='DELETE'> DELETE REQUEST </button>
-  )
-}
-
-async function GetAPICall() {
-  const resp = await fetch('http://localhost:5001/');
-  const body = resp.body;
-  console.log(resp.text());
-  alert(body);
-}
-
-function PostAPICall() {
-  fetch('http://localhost:5001/echo', {
-    method: "POST",
-    body: "this is what I want you to echo."
-  })
-    .then(response => response.text())
-    .then(data => console.log(data));
-}
 export default App;
