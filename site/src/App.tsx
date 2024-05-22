@@ -16,14 +16,40 @@ interface IServices {
   is_unavailable?: boolean;
 }
 
+interface IConversionReqResponse {
+  file_name?: string;
+  success?: boolean;
+  error?: string;
+}
+
+const buildAdditionalCardInformation = (resp: IServices) => {
+
+  resp.available_services?.forEach((service) => {
+    // extract the file extension from the service name
+    service.fileExtension = service.name.split('To')[0].toLowerCase();
+    // the function to post the request convert a file
+    service.conversionCallback = async function conversionCallback(): Promise<IConversionReqResponse> {
+      try {
+        const resp = await fetch('http://localhost:5001/convert_file/' + service.name, { method: "POST" });
+        return await resp.json();
+      }
+      catch (e) {
+        return { success: false, error: "Unable to make request or confirm request success." };
+      }
+    }
+  });
+
+  return resp;
+}
 
 const AvailableServices: React.FC = () => {
   const [services, setServices] = useState<IServices>({});
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await fetch('http://localhost:5001/available_options', { method: "GET", });
-        const result = await resp.json();
+        const resp = await fetch('http://localhost:5001/available_options', { method: "GET" });
+        let result = await resp.json();
+        result = buildAdditionalCardInformation(result); // add the addition properties that we need for the Cards
         setServices(result);
       }
       catch (e) {
