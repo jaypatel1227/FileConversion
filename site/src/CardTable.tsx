@@ -1,40 +1,82 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export interface ICardProps {
   name: string;
   description: string;
   fileExtension: string;
-  conversionCallback: () => void;
+  postRequestURL: string;
 }
 
 const Card: React.FC<ICardProps> = (props) => {
-  let { name, description, fileExtension, conversionCallback } = props;
+  let { name, description, fileExtension, postRequestURL } = props;
 
   return (
     <div className='_container'>
       <div className='_cardTitle'> {name} </div>
       <div className='_cardDescription'> {description} </div>
-      <ConvertRequestButton fileExtension={fileExtension} conversionCallback={conversionCallback} />
+      <ConvertRequestButton name={name} fileExtension={fileExtension} postRequestURL={postRequestURL} />
     </div>
   );
 };
 
 interface IConvertRequestButtonProps {
+  name: string;
   fileExtension: string;
-  conversionCallback: () => void;
+  postRequestURL: string;
 }
 
 const ConvertRequestButton: React.FC<IConvertRequestButtonProps> = (props) => {
-  const conversionOnChange: React.ChangeEventHandler = (e: React.ChangeEvent) => {
-    if (e.isTrusted && !!e.target) {
-      return e.target; //TODO: Handle the button
+
+  const [file, setFile] = useState<File>();
+  const [responseData, setResponseData] = useState(null);
+
+  const handleSubmit: React.FormEventHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file ?? '');
+
+      const response = await fetch(props.postRequestURL, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setResponseData(data);
+      } else {
+        console.error('Request failed:', response.status);
+      }
+    } catch (error) {
+      console.error('Error sending request:', error);
+    }
+  };
+
+  const handleFileChange: React.ChangeEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!!e.target.files) {
+      setFile(e.target.files[0]);
     }
   };
 
   return (
     <div>
-      <input className='_convertButton' type='file' accept={props.fileExtension} onChange={conversionOnChange} />
-      <button type='submit' onClick={props.conversionCallback} >Send Convert Request</button>
+      <form>
+        <label htmlFor={'fileinput_' + props.name}>
+          <input
+            type="file"
+            accept={props.fileExtension}
+            onChange={handleFileChange}
+          />
+        </label>
+        <button type="submit" onClick={handleSubmit}>Submit</button>
+      </form>
+      {responseData && (
+        <div>
+          Received JSON data:
+          <pre>{JSON.stringify(responseData, null, 2)}</pre>
+        </div>
+      )}
     </div>
   );
 };
@@ -50,7 +92,7 @@ const CardRow: React.FC<ICardRowProps> = (props) => {
     <>
       {props.cards.map((card, index) => (
         <td key={index + props.initialIndex} className='_cardItem'>
-          <Card name={card.name} description={card.description} fileExtension={card.fileExtension} conversionCallback={card.conversionCallback} />
+          <Card name={card.name} description={card.description} fileExtension={card.fileExtension} postRequestURL={card.postRequestURL} />
         </td>
       ))}
     </>

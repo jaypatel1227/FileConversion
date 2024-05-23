@@ -113,6 +113,7 @@ async fn convert_file(
         None => return Ok(HttpResponse::BadRequest().body("Invalid Conversion Request!")),
         Some(service_info) => {
             dbg!(filename.clone());
+            fs::create_dir_all("./output/")?;
             let converted_file = service::call(
                 service_info.service_func_name,
                 format!("{}{}", "./input/", filename),

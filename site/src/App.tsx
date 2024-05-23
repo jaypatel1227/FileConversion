@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react'
 import { ICardProps, CardTable } from "./CardTable";
 import "./App.css";
 
+export const API_URL = 'http://localhost:5001/';
+
 function App() {
 
   return (
@@ -16,27 +18,32 @@ interface IServices {
   is_unavailable?: boolean;
 }
 
-interface IConversionReqResponse {
-  file_name?: string;
-  success?: boolean;
-  error?: string;
-}
+// interface IConversionReqResponse {
+//   file_name?: string;
+//   success?: boolean;
+//   error?: string;
+// }
 
 const buildAdditionalCardInformation = (resp: IServices) => {
 
   resp.available_services?.forEach((service) => {
     // extract the file extension from the service name
     service.fileExtension = service.name.split('To')[0].toLowerCase();
-    // the function to post the request convert a file
-    service.conversionCallback = async function conversionCallback(): Promise<IConversionReqResponse> {
-      try {
-        const resp = await fetch('http://localhost:5001/convert_file/' + service.name, { method: "POST" });
-        return await resp.json();
-      }
-      catch (e) {
-        return { success: false, error: "Unable to make request or confirm request success." };
-      }
-    }
+    // the URL for the post request
+    service.postRequestURL = API_URL + 'convert_file/' + service.name + '/';
+    // // the function to post the request convert a file
+    // service.conversionCallback = async function conversionCallback(): Promise<IConversionReqResponse> {
+    //   try {
+    //     const data = new FormData();
+    //     const file_select = document.querySelector('input[type="file"]');
+    //     data.append('file', file_select?.);
+    //     const resp = await fetch(, { method: "POST" });
+    //     return await resp.json();
+    //   }
+    //   catch (e) {
+    //     return { success: false, error: "Unable to make request or confirm request success." };
+    //   }
+    // }
   });
 
   return resp;
@@ -47,7 +54,7 @@ const AvailableServices: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await fetch('http://localhost:5001/available_options', { method: "GET" });
+        const resp = await fetch(API_URL + 'available_options', { method: "GET" });
         let result = await resp.json();
         result = buildAdditionalCardInformation(result); // add the addition properties that we need for the Cards
         setServices(result);
