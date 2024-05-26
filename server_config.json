@@ -2,43 +2,33 @@
   "service_name": "Converion of Files World",
   "available_services": [
     {
-      "name": "DocxToPDF",
-      "service_func_name": "docx_to_pdf",
-      "description": "DOCX is a propietary Microsoft format for storing documents. Most well known for being used with Word. PDF is a standard for documents and is much more user freindly than DOCX."
-    },
-    {
       "name": "PNGToWEBP",
       "service_func_name": "png_to_webp",
       "description": "PNG is a lossless image format that has been widely used. WEPB is a newer format that is similarly lossless and gaining popularity."
     },
     {
-      "name": "Service C",
-      "service_func_name": "service_c_function",
+      "name": "WEBPToPNG",
+      "service_func_name": "webp_to_png",
       "description": "Example Service C. This is does this abnd that."
     },
     {
-      "name": "DocxToPDF",
-      "service_func_name": "docx_to_pdf",
+      "name": "BMPToPNG",
+      "service_func_name": "bmp_to_png",
       "description": "DOCX is a propietary Microsoft format for storing documents. Most well known for being used with Word. PDF is a standard for documents and is much more user freindly than DOCX."
     },
     {
-      "name": "DocxToPDF",
-      "service_func_name": "docx_to_pdf",
+      "name": "JPGToPNG",
+      "service_func_name": "jpg_to_png",
       "description": "DOCX is a propietary Microsoft format for storing documents. Most well known for being used with Word. PDF is a standard for documents and is much more user freindly than DOCX."
     },
     {
-      "name": "DocxToPDF",
-      "service_func_name": "docx_to_pdf",
+      "name": "GIFToPNG",
+      "service_func_name": "gif_to_png",
       "description": "DOCX is a propietary Microsoft format for storing documents. Most well known for being used with Word. PDF is a standard for documents and is much more user freindly than DOCX."
     },
     {
-      "name": "DocxToPDF",
-      "service_func_name": "docx_to_pdf",
-      "description": "DOCX is a propietary Microsoft format for storing documents. Most well known for being used with Word. PDF is a standard for documents and is much more user freindly than DOCX."
-    },
-    {
-      "name": "DocxToPDF",
-      "service_func_name": "docx_to_pdf",
+      "name": "ICOToPNG",
+      "service_func_name": "ico_to_png",
       "description": "DOCX is a propietary Microsoft format for storing documents. Most well known for being used with Word. PDF is a standard for documents and is much more user freindly than DOCX."
     }
   ]

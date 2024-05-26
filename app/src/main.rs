@@ -30,7 +30,7 @@ struct ConversionResponse {
 }
 
 fn get_server_config() -> ServerConfig {
-    let server_config = Path::new("../server.config");
+    let server_config = Path::new("../server_config.json");
     let file = File::open(server_config)
         .expect("No server.config not found at the top level of the project");
 
@@ -61,8 +61,6 @@ async fn convert_file(
             .unwrap()
             .as_micros()
     );
-    dbg!(time_stamp.clone());
-    dbg!(path.clone());
 
     while let Ok(Some(mut field)) = payload.try_next().await {
         let field_type = field.content_disposition().get_name().unwrap();
@@ -77,14 +75,10 @@ async fn convert_file(
 
         fs::create_dir_all("./input/")?;
         let filepath = format!("{}{}", "./input/", sanitize_filename::sanitize(&filename));
-        dbg!(filepath.clone());
         // File::create is blocking operation, use thread pool
         let mut f = web::block(|| std::fs::File::create(filepath))
             .await
             .unwrap();
-
-        dbg!(field_type);
-        dbg!(filename.clone());
 
         // Field in turn is stream of *Bytes* object
         while let Some(chunk) = field.next().await {
@@ -107,24 +101,18 @@ async fn convert_file(
         .into_iter()
         .find(|s| s.name == conversion_type);
 
-    dbg!(conversion_type.clone());
-
     match matching_service {
         None => return Ok(HttpResponse::BadRequest().body("Invalid Conversion Request!")),
         Some(service_info) => {
-            dbg!(filename.clone());
             fs::create_dir_all("./output/")?;
             let converted_file = service::call(
                 service_info.service_func_name,
                 format!("{}{}", "./input/", filename),
-            );
-
-            // dbg!(service_info.service_func_name.clone());
-            dbg!(service_info.name.clone());
-            dbg!(converted_file.clone());
+            )?;
 
             let resp = ConversionResponse {
-                file_name: converted_file,
+                file_name: converted_file.replace("./output", "output"), // convert from relative
+                // path to route to fetch
                 success: true,
             };
 
