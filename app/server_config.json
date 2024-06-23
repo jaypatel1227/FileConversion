@@ -1,0 +1,55 @@
+{
+  "service_name": "Conversion of Files World",
+  "available_services": [
+    {
+      "name": "WEBP To PNG",
+      "service_func_name": "webp_to_png",
+      "description": "WEBP is a modern image format that provides superior lossless and lossy compression for images on the web. PNG is a lossless image format that supports transparency and is widely used for web graphics."
+    },
+    {
+      "name": "BMP To PNG",
+      "service_func_name": "bmp_to_png",
+      "description": "BMP is a raster graphics image file format used to store bitmap digital images. PNG is a lossless image format that supports transparency and is widely used for web graphics."
+    },
+    {
+      "name": "JPG To PNG",
+      "service_func_name": "jpg_to_png",
+      "description": "JPG (or JPEG) is a commonly used method of lossy compression for digital images. PNG is a lossless image format that supports transparency and is widely used for web graphics."
+    },
+    {
+      "name": "GIF To PNG",
+      "service_func_name": "gif_to_png",
+      "description": "GIF is a bitmap image format that supports animation and uses lossless compression. PNG is a lossless image format that supports transparency and is widely used for web graphics."
+    },
+    {
+      "name": "ICO To PNG",
+      "service_func_name": "ico_to_png",
+      "description": "ICO is an image file format used for icons in Microsoft Windows. PNG is a lossless image format that supports transparency and is widely used for web graphics."
+    },
+    {
+      "name": "PNG To WEBP",
+      "service_func_name": "png_to_webp",
+      "description": "PNG is a lossless image format that supports transparency and is widely used for web graphics. WEBP is a modern image format that provides superior lossless and lossy compression for images on the web."
+    },
+    {
+      "name": "JPG To WEBP",
+      "service_func_name": "jpg_to_webp",
+      "description": "JPG (or JPEG) is a commonly used method of lossy compression for digital images. WEBP is a modern image format that provides superior lossless and lossy compression for images on the web."
+    },
+    {
+      "name": "GIF To WEBP",
+      "service_func_name": "gif_to_webp",
+      "description": "GIF is a bitmap image format that supports animation and uses lossless compression. WEBP is a modern image format that provides superior lossless and lossy compression for images on the web."
+    },
+    {
+      "name": "ICO To WEBP",
+      "service_func_name": "ico_to_webp",
+      "description": "ICO is an image file format used for icons in Microsoft Windows. WEBP is a modern image format that provides superior lossless and lossy compression for images on the web."
+    },
+    {
+      "name": "BMP To WEBP",
+      "service_func_name": "bmp_to_webp",
+      "description": "BMP is a raster graphics image file format used to store bitmap digital images. WEBP is a modern image format that provides superior lossless and lossy compression for images on the web."
+    }
+  ]
+}

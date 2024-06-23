@@ -30,7 +30,7 @@ struct ConversionResponse {
 }
 
 fn get_server_config() -> ServerConfig {
-    let server_config = Path::new("../server_config.json");
+    let server_config = Path::new("./server_config.json");
     let file = File::open(server_config)
         .expect("No server.config not found at the top level of the project");
 
@@ -108,7 +108,8 @@ async fn convert_file(
             let converted_file = service::call(
                 service_info.service_func_name,
                 format!("{}{}", "./input/", filename),
-            )?;
+            )
+            .unwrap();
 
             let resp = ConversionResponse {
                 file_name: converted_file.replace("./output", "output"), // convert from relative

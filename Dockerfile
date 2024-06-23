@@ -6,18 +6,23 @@
 
 # Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
 
-ARG RUST_VERSION=1.77.2
 ARG APP_NAME="app"
 
 ################################################################################
 # Create a stage for building the application.
 
-FROM rust:${RUST_VERSION}-alpine AS build
+FROM rustlang/rust:nightly-alpine as build
 ARG APP_NAME
 WORKDIR /app
 
 # Install host build dependencies.
-RUN apk add --no-cache clang lld musl-dev git
+RUN apk --update add --no-cache clang-dev lld musl-dev git pkgconfig
+
+# Install ImageMagick
+RUN apk add --no-cache imagemagick-dev
+
+# let rust-bindgen build
+ENV RUSTFLAGS="-C target-feature=-crt-static"
 
 # Build the application.
 # Leverage a cache mount to /usr/local/cargo/registry/
@@ -27,14 +32,16 @@ RUN apk add --no-cache clang lld musl-dev git
 # Leverage a bind mount to the src directory to avoid having to copy the
 # source code into the container. Once built, copy the executable to an
 # output directory before the cache mounted /app/target is unmounted.
-RUN --mount=type=bind,source=src,target=src \
-    --mount=type=bind,source=Cargo.toml,target=Cargo.toml \
-    --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
+RUN --mount=type=bind,source=./app/src,target=src \
+    --mount=type=bind,source=./app/Cargo.toml,target=Cargo.toml \
+    --mount=type=bind,source=./app/Cargo.lock,target=Cargo.lock \
+    --mount=type=bind,source=./app/server_config.json,target=server_config.json \
     --mount=type=cache,target=/app/target/ \
     --mount=type=cache,target=/usr/local/cargo/git/db \
     --mount=type=cache,target=/usr/local/cargo/registry/ \
 cargo build --locked --release && \
-cp ./target/release/$APP_NAME /bin/server
+cp ./target/release/$APP_NAME /bin/server && \
+cp ./server_config.json /bin/server_config.json # move the server configuration
 
 ################################################################################
 # Create a new stage for running the application that contains the minimal
@@ -46,7 +53,10 @@ cp ./target/release/$APP_NAME /bin/server
 # By specifying the "3.18" tag, it will use version 3.18 of alpine. If
 # reproducability is important, consider using a digest
 # (e.g., alpine@sha256:664888ac9cfd28068e062c991ebcff4b4c7307dc8dd4df9e728bedde5c449d91).
-FROM alpine:3.18 AS final
+FROM alpine:3.20 AS final
+
+# Install ImageMagick
+RUN apk add --no-cache imagemagick-dev
 
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
@@ -65,7 +75,7 @@ USER appuser
 COPY --from=build /bin/server /bin/
 
 # Expose the port that the application listens on.
-EXPOSE 5000
+EXPOSE 5001
 
 # What the container should run when it is started.
 CMD ["/bin/server"]
