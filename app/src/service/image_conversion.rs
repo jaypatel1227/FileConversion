@@ -19,7 +19,7 @@ fn identify_extension(path: String) -> String {
 
 // pub fn generic_to_webp(input_path: String) -> Result<String, Box<dyn std::error::Error>> {
 //     let input_extension = identify_extension(input_path.clone());
-//     let out_path = create_output_path(input_path.clone(), input_extension.to_string(), ".webp");
+//     let out_path = create_output_path(input_path.clone(), input_extension.to_string(), "webp");
 //     let input = ImageResource::from_path(input_path);
 //     let mut output = ImageResource::from_path(out_path.clone());
 //     image_convert::to_webp(&mut output, &input, &WEBPConfig::new())?;
@@ -28,7 +28,7 @@ fn identify_extension(path: String) -> String {
 
 pub fn generic_to_png(input_path: String) -> Result<String, Box<dyn std::error::Error>> {
     let input_extension = identify_extension(input_path.clone());
-    let out_path = create_output_path(input_path.clone(), input_extension.to_string(), ".png");
+    let out_path = create_output_path(input_path.clone(), input_extension.to_string(), "png");
     let input = ImageResource::from_path(input_path);
     let mut output = ImageResource::from_path(out_path.clone());
     image_convert::to_png(&mut output, &input, &PNGConfig::new())?;
