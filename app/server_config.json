@@ -50,6 +50,31 @@
       "name": "BMP To WEBP",
       "service_func_name": "bmp_to_webp",
       "description": "BMP is a raster graphics image file format used to store bitmap digital images. WEBP is a modern image format that provides superior lossless and lossy compression for images on the web."
+    },
+   {
+      "name": "PNG To JPG",
+      "service_func_name": "png_to_jpg",
+      "description": "PNG is a lossless image format that supports transparency and is widely used for web graphics. JPG (or JPEG) is a commonly used method of lossy compression for digital images."
+    },
+    {
+      "name": "WEBP To JPG",
+      "service_func_name": "webp_to_jpg",
+      "description": "WEBP is a modern image format that provides superior lossless and lossy compression for images on the web. JPG (or JPEG) is a commonly used method of lossy compression for digital images."
+    },
+    {
+      "name": "BMP To JPG",
+      "service_func_name": "bmp_to_jpg",
+      "description": "BMP is a raster graphics image file format used to store bitmap digital images. JPG (or JPEG) is a commonly used method of lossy compression for digital images."
+    },
+    {
+      "name": "GIF To ICO",
+      "service_func_name": "gif_to_ico",
+      "description": "GIF is a bitmap image format that supports animation and uses lossless compression. ICO is an image file format used for icons in Microsoft Windows."
+    },
+    {
+      "name": "ICO To JPG",
+      "service_func_name": "ico_to_jpg",
+      "description": "ICO is an image file format used for icons in Microsoft Windows. JPG (or JPEG) is a commonly used method of lossy compression for digital images."
     }
   ]
 }
