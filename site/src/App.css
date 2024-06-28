@@ -17,18 +17,9 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 ._appHeader {
-  background-color: #282c34;
+  background-image: linear-gradient(#020e26, #282c34);
+  /* background-color: #282c34; */
   min-height: 10vh;
   display: flex;
   flex-direction: column;
@@ -56,26 +47,64 @@
 }
 
 ._cardTitle {
-  font-size: 16pt;
+  font-size: 18pt;
   text-align: center;
   vertical-align: top;
 }
 
 ._cardDescription {
-  font-size: 10pt;
+  font-size: 11pt;
   font-style: italic;
 }
 
 ._cardItem {
-  font-size: 14pt;
+  font-size: 16pt;
   border: 3px outset grey;
   border-radius: 8px;
   padding: 5px;
   margin-bottom: 10px;
   margin-left: 4px;
   margin-right: 4px;
+  background: radial-gradient(circle, #ffffff, #b8c5e0);
 }
 
 ._unavaiblableService {
   height: 100% !important;
+}
+
+._flexBreak {
+  flex-basis: 100%;
+  height: 0;
+}
+
+._formArea {
+  height: 100%;
+  width: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: center;
+  justify-items: center;
+}
+
+._button,
+input::file-selector-button {
+  background: linear-gradient(to right, #020e26, #142c5c);
+  background-color: #142c5c;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 2.3s ease-in-out;
+}
+
+._button:hover,
+input::file-selector-button:hover {
+  background-color: #020e26;
+}
+
+._centerVert {
+  vertical-align: middle;
 }
