@@ -2,79 +2,154 @@
   "service_name": "Conversion of Files World",
   "available_services": [
     {
-      "name": "WEBP To PNG",
-      "service_func_name": "webp_to_png",
-      "description": "WEBP is a modern image format that provides superior lossless and lossy compression for images on the web. PNG is a lossless image format that supports transparency and is widely used for web graphics."
-    },
-    {
-      "name": "BMP To PNG",
-      "service_func_name": "bmp_to_png",
-      "description": "BMP is a raster graphics image file format used to store bitmap digital images. PNG is a lossless image format that supports transparency and is widely used for web graphics."
-    },
-    {
       "name": "JPG To PNG",
       "service_func_name": "jpg_to_png",
-      "description": "JPG (or JPEG) is a commonly used method of lossy compression for digital images. PNG is a lossless image format that supports transparency and is widely used for web graphics."
+      "description": "Convert a JPG image, a commonly used method of lossy compression for digital images, to a PNG image, a lossless format that supports transparency."
+    },
+    {
+      "name": "WEBP To PNG",
+      "service_func_name": "webp_to_png",
+      "description": "Convert a WEBP image, a modern format providing superior lossless and lossy compression, to a PNG image, a lossless format that supports transparency."
     },
     {
       "name": "GIF To PNG",
       "service_func_name": "gif_to_png",
-      "description": "GIF is a bitmap image format that supports animation and uses lossless compression. PNG is a lossless image format that supports transparency and is widely used for web graphics."
+      "description": "Convert a GIF image, a bitmap format that supports animation and uses lossless compression, to a PNG image, a lossless format that supports transparency."
+    },
+    {
+      "name": "BMP To PNG",
+      "service_func_name": "bmp_to_png",
+      "description": "Convert a BMP image, a raster format used to store bitmap digital images, to a PNG image, a lossless format that supports transparency."
     },
     {
       "name": "ICO To PNG",
       "service_func_name": "ico_to_png",
-      "description": "ICO is an image file format used for icons in Microsoft Windows. PNG is a lossless image format that supports transparency and is widely used for web graphics."
+      "description": "Convert an ICO image, a format used for icons in Microsoft Windows, to a PNG image, a lossless format that supports transparency."
     },
     {
       "name": "PNG To WEBP",
       "service_func_name": "png_to_webp",
-      "description": "PNG is a lossless image format that supports transparency and is widely used for web graphics. WEBP is a modern image format that provides superior lossless and lossy compression for images on the web."
+      "description": "Convert a PNG image, a lossless format that supports transparency, to a WEBP image, a modern format providing superior lossless and lossy compression."
     },
     {
       "name": "JPG To WEBP",
       "service_func_name": "jpg_to_webp",
-      "description": "JPG (or JPEG) is a commonly used method of lossy compression for digital images. WEBP is a modern image format that provides superior lossless and lossy compression for images on the web."
+      "description": "Convert a JPG image, a commonly used method of lossy compression for digital images, to a WEBP image, a modern format providing superior lossless and lossy compression."
     },
     {
       "name": "GIF To WEBP",
       "service_func_name": "gif_to_webp",
-      "description": "GIF is a bitmap image format that supports animation and uses lossless compression. WEBP is a modern image format that provides superior lossless and lossy compression for images on the web."
-    },
-    {
-      "name": "ICO To WEBP",
-      "service_func_name": "ico_to_webp",
-      "description": "ICO is an image file format used for icons in Microsoft Windows. WEBP is a modern image format that provides superior lossless and lossy compression for images on the web."
+      "description": "Convert a GIF image, a bitmap format that supports animation and uses lossless compression, to a WEBP image, a modern format providing superior lossless and lossy compression."
     },
     {
       "name": "BMP To WEBP",
       "service_func_name": "bmp_to_webp",
-      "description": "BMP is a raster graphics image file format used to store bitmap digital images. WEBP is a modern image format that provides superior lossless and lossy compression for images on the web."
+      "description": "Convert a BMP image, a raster format used to store bitmap digital images, to a WEBP image, a modern format providing superior lossless and lossy compression."
     },
-   {
+    {
+      "name": "ICO To WEBP",
+      "service_func_name": "ico_to_webp",
+      "description": "Convert an ICO image, a format used for icons in Microsoft Windows, to a WEBP image, a modern format providing superior lossless and lossy compression."
+    },
+    {
       "name": "PNG To JPG",
       "service_func_name": "png_to_jpg",
-      "description": "PNG is a lossless image format that supports transparency and is widely used for web graphics. JPG (or JPEG) is a commonly used method of lossy compression for digital images."
+      "description": "Convert a PNG image, a lossless format that supports transparency, to a JPG image, a commonly used method of lossy compression for digital images."
     },
     {
       "name": "WEBP To JPG",
       "service_func_name": "webp_to_jpg",
-      "description": "WEBP is a modern image format that provides superior lossless and lossy compression for images on the web. JPG (or JPEG) is a commonly used method of lossy compression for digital images."
+      "description": "Convert a WEBP image, a modern format providing superior lossless and lossy compression, to a JPG image, a commonly used method of lossy compression for digital images."
+    },
+    {
+      "name": "GIF To JPG",
+      "service_func_name": "gif_to_jpg",
+      "description": "Convert a GIF image, a bitmap format that supports animation and uses lossless compression, to a JPG image, a commonly used method of lossy compression for digital images."
     },
     {
       "name": "BMP To JPG",
       "service_func_name": "bmp_to_jpg",
-      "description": "BMP is a raster graphics image file format used to store bitmap digital images. JPG (or JPEG) is a commonly used method of lossy compression for digital images."
-    },
-    {
-      "name": "GIF To ICO",
-      "service_func_name": "gif_to_ico",
-      "description": "GIF is a bitmap image format that supports animation and uses lossless compression. ICO is an image file format used for icons in Microsoft Windows."
+      "description": "Convert a BMP image, a raster format used to store bitmap digital images, to a JPG image, a commonly used method of lossy compression for digital images."
     },
     {
       "name": "ICO To JPG",
       "service_func_name": "ico_to_jpg",
-      "description": "ICO is an image file format used for icons in Microsoft Windows. JPG (or JPEG) is a commonly used method of lossy compression for digital images."
+      "description": "Convert an ICO image, a format used for icons in Microsoft Windows, to a JPG image, a commonly used method of lossy compression for digital images."
+    },
+    {
+      "name": "PNG To GIF",
+      "service_func_name": "png_to_gif",
+      "description": "Convert a PNG image, a lossless format that supports transparency, to a GIF image, a bitmap format that supports animation and uses lossless compression."
+    },
+    {
+      "name": "WEBP To GIF",
+      "service_func_name": "webp_to_gif",
+      "description": "Convert a WEBP image, a modern format providing superior lossless and lossy compression, to a GIF image, a bitmap format that supports animation and uses lossless compression."
+    },
+    {
+      "name": "JPG To GIF",
+      "service_func_name": "jpg_to_gif",
+      "description": "Convert a JPG image, a commonly used method of lossy compression for digital images, to a GIF image, a bitmap format that supports animation and uses lossless compression."
+    },
+    {
+      "name": "BMP To GIF",
+      "service_func_name": "bmp_to_gif",
+      "description": "Convert a BMP image, a raster format used to store bitmap digital images, to a GIF image, a bitmap format that supports animation and uses lossless compression."
+    },
+    {
+      "name": "ICO To GIF",
+      "service_func_name": "ico_to_gif",
+      "description": "Convert an ICO image, a format used for icons in Microsoft Windows, to a GIF image, a bitmap format that supports animation and uses lossless compression."
+    },
+    {
+      "name": "PNG To BMP",
+      "service_func_name": "png_to_bmp",
+      "description": "Convert a PNG image, a lossless format that supports transparency, to a BMP image, a raster format used to store bitmap digital images."
+    },
+    {
+      "name": "WEBP To BMP",
+      "service_func_name": "webp_to_bmp",
+      "description": "Convert a WEBP image, a modern format providing superior lossless and lossy compression, to a BMP image, a raster format used to store bitmap digital images."
+    },
+    {
+      "name": "JPG To BMP",
+      "service_func_name": "jpg_to_bmp",
+      "description": "Convert a JPG image, a commonly used method of lossy compression for digital images, to a BMP image, a raster format used to store bitmap digital images."
+    },
+    {
+      "name": "GIF To BMP",
+      "service_func_name": "gif_to_bmp",
+      "description": "Convert a GIF image, a bitmap format that supports animation and uses lossless compression, to a BMP image, a raster format used to store bitmap digital images."
+    },
+    {
+      "name": "ICO To BMP",
+      "service_func_name": "ico_to_bmp",
+      "description": "Convert an ICO image, a format used for icons in Microsoft Windows, to a BMP image, a raster format used to store bitmap digital images."
+    },
+    {
+      "name": "PNG To ICO",
+      "service_func_name": "png_to_ico",
+      "description": "Convert a PNG image, a lossless format that supports transparency, to an ICO image, a format used for icons in Microsoft Windows."
+    },
+    {
+      "name": "WEBP To ICO",
+      "service_func_name": "webp_to_ico",
+      "description": "Convert a WEBP image, a modern format providing superior lossless and lossy compression, to an ICO image, a format used for icons in Microsoft Windows."
+    },
+    {
+      "name": "JPG To ICO",
+      "service_func_name": "jpg_to_ico",
+      "description": "Convert a JPG image, a commonly used method of lossy compression for digital images, to an ICO image, a format used for icons in Microsoft Windows."
+    },
+    {
+      "name": "GIF To ICO",
+      "service_func_name": "gif_to_ico",
+      "description": "Convert a GIF image, a bitmap format that supports animation and uses lossless compression, to an ICO image, a format used for icons in Microsoft Windows."
+    },
+    {
+      "name": "BMP To ICO",
+      "service_func_name": "bmp_to_ico",
+      "description": "Convert a BMP image, a raster format used to store bitmap digital images, to an ICO image, a format used for icons in Microsoft Windows."
     }
   ]
 }

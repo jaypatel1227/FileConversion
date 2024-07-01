@@ -1,5 +1,5 @@
 use image::io::Reader as ImageReader;
-use image_convert::{ImageResource, PNGConfig};
+use image_convert::{BMPConfig, GIFConfig, ICOConfig, ImageResource, JPGConfig, PNGConfig};
 use std::path::PathBuf;
 
 const ERR_INPUT_OPEN: &str = "Error opening the input file.";
@@ -32,6 +32,42 @@ pub fn generic_to_png(input_path: String) -> Result<String, Box<dyn std::error::
     let input = ImageResource::from_path(input_path);
     let mut output = ImageResource::from_path(out_path.clone());
     image_convert::to_png(&mut output, &input, &PNGConfig::new())?;
+    Ok(out_path)
+}
+
+pub fn generic_to_jpg(input_path: String) -> Result<String, Box<dyn std::error::Error>> {
+    let input_extension = identify_extension(input_path.clone());
+    let out_path = create_output_path(input_path.clone(), input_extension.to_string(), "jpg");
+    let input = ImageResource::from_path(input_path);
+    let mut output = ImageResource::from_path(out_path.clone());
+    image_convert::to_jpg(&mut output, &input, &JPGConfig::new())?;
+    Ok(out_path)
+}
+
+pub fn generic_to_gif(input_path: String) -> Result<String, Box<dyn std::error::Error>> {
+    let input_extension = identify_extension(input_path.clone());
+    let out_path = create_output_path(input_path.clone(), input_extension.to_string(), "gif");
+    let input = ImageResource::from_path(input_path);
+    let mut output = ImageResource::from_path(out_path.clone());
+    image_convert::to_gif(&mut output, &input, &GIFConfig::new())?;
+    Ok(out_path)
+}
+
+pub fn generic_to_bmp(input_path: String) -> Result<String, Box<dyn std::error::Error>> {
+    let input_extension = identify_extension(input_path.clone());
+    let out_path = create_output_path(input_path.clone(), input_extension.to_string(), "bmp");
+    let input = ImageResource::from_path(input_path);
+    let mut output = ImageResource::from_path(out_path.clone());
+    image_convert::to_bmp(&mut output, &input, &BMPConfig::new())?;
+    Ok(out_path)
+}
+
+pub fn generic_to_ico(input_path: String) -> Result<String, Box<dyn std::error::Error>> {
+    let input_extension = identify_extension(input_path.clone());
+    let out_path = create_output_path(input_path.clone(), input_extension.to_string(), "ico");
+    let input = ImageResource::from_path(input_path);
+    let mut output = ImageResource::from_path(out_path.clone());
+    image_convert::to_ico(&mut output, &input, &ICOConfig::new())?;
     Ok(out_path)
 }
 
