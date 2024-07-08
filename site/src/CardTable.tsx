@@ -47,14 +47,21 @@ const CardRow: React.FC<ICardRowProps> = (props) => {
 };
 
 export interface ICardTableProps {
-  cards?: ICardProps[];
+  cards?: ICardProps[],
+  searchFilter: string,
 }
 
-export const CardTable = (props: ICardTableProps) => {
+export const CardTable: React.FC<ICardTableProps> = (props: ICardTableProps) => {
 
   let NUM_COLS = 3;
 
-  const groupedCards = props.cards?.reduce<ICardProps[][]>((arr, card, index) => {
+  if (!props.cards) {
+    return null;
+  }
+
+  const filteredCards = !props.searchFilter ? props.cards : props.cards.filter((card) => card.name.includes(props.searchFilter) || card.description.includes(props.searchFilter));
+
+  const groupedCards = filteredCards.reduce<ICardProps[][]>((arr, card, index) => {
     if (index % NUM_COLS === 0) arr.push([]);
     arr[arr.length - 1].push(card);
     return arr;

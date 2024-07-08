@@ -1,65 +1,74 @@
-import * as React from 'react'
+import React, { SetStateAction } from 'react'
 import { useEffect, useState } from 'react'
-import { ICardProps, CardTable } from "./CardTable";
+import { CardTable } from "./CardTable";
+import { ISelectorModeParams, SelectorMode } from "./SelectorMode";
+import * as Utils from "./Utils";
 import "./App.css";
 
 export const API_URL = 'http://localhost:5001/';
 
 function App() {
-
   return (
-    <AvailableServices />
+    <MainContent />
   )
 }
 
-interface IServices {
-  service_name?: string;
-  available_services?: ICardProps[];
-  is_unavailable?: boolean;
+export interface IUnavailableServiceParams {
+  setServices: React.Dispatch<SetStateAction<Utils.IServices>>
 }
 
-const buildAdditionalCardInformation = (resp: IServices) => {
+const UnavailableServices: React.FC<IUnavailableServiceParams> = (props) => {
+  return (
+    <div className='_appHeader _unavaiblableService'>
+      <div> The file conversion service appears to be down. Please try again later. </div>
+      <button className='_button' onClick={() => props.setServices({})}>Try Again</button>
+    </div>
+  );
+};
 
-  resp.available_services?.forEach((service) => {
-    // extract the file extension from the service name
-    service.fileExtension = service.name.split('To')[0].toLowerCase();
-    // the URL for the post request
-    service.postRequestURL = API_URL + 'convert_file/' + service.name + '/';
-  });
-
-  return resp;
-}
-
-const AvailableServices: React.FC = () => {
-  const [services, setServices] = useState<IServices>({});
+const MainContent: React.FC = () => {
+  const [services, setServices] = useState<Utils.IServices>({});
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectorMode, setSelectorMode] = useState<boolean>(false);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resp = await fetch(API_URL + 'available_options', { method: "GET" });
-        let result = await resp.json();
-        result = buildAdditionalCardInformation(result); // add the addition properties that we need for the Cards
-        setServices(result);
-      }
-      catch (e) {
-        setServices({ is_unavailable: true });
-      }
-    };
-    fetchData();
+    Utils.fetchServices({ setServices });
   }, [services]);
 
   if (services.is_unavailable) {
     return (
-      <div className='_appHeader _unavaiblableService'>
-        <div> The file conversion service appears to be down. Please try again later. </div>
-        <button className='_button' onClick={() => setServices({})}> Try Again</button>
-      </div>
+      <UnavailableServices setServices={setServices} />
     );
   }
 
   return (
     <div>
       <div className='_appHeader'> {services.service_name}</div>
-      <CardTable cards={services.available_services ?? []} />
+      <HeaderBar searchTerm={searchTerm} outputSearchTerm={setSearchTerm} selectorMode={selectorMode} setSelectorMode={setSelectorMode} setServices={setServices} />
+      {selectorMode ? <SelectorMode services={services} /> :
+        <CardTable cards={services.available_services ?? []} searchFilter={searchTerm} />
+      }
+    </div>
+  );
+}
+
+interface IHeaderBarParams {
+  searchTerm: string,
+  outputSearchTerm: React.Dispatch<SetStateAction<string>>,
+  selectorMode: boolean,
+  setSelectorMode: React.Dispatch<SetStateAction<boolean>>,
+  setServices: React.Dispatch<SetStateAction<Utils.IServices>>,
+}
+
+const HeaderBar: React.FC<IHeaderBarParams> = (props: IHeaderBarParams) => {
+  return (
+    <div>
+      <input type='text' placeholder='🔍' value={props.searchTerm} onChange={(e) => e.isTrusted ? props.outputSearchTerm(e.target.value) : null} name='filter' />
+      {!!props.searchTerm ?
+        <button onClick={() => props.outputSearchTerm('')} >❌</button>
+        : null
+      }
+      <button className='_button' onClick={() => props.setServices({})}>Clear</button>
+      <button className='_button' onClick={() => props.setSelectorMode(!props.selectorMode)}>{props.selectorMode ? 'All Options' : 'Selector Mode'}</button>
     </div>
   );
 }
