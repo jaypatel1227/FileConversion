@@ -11,7 +11,7 @@ ARG APP_NAME="app"
 ################################################################################
 # Create a stage for building the application.
 
-FROM rustlang/rust:nightly-alpine as build
+FROM rustlang/rust:nightly-alpine AS build
 ARG APP_NAME
 WORKDIR /app
 
@@ -71,11 +71,13 @@ RUN adduser \
     appuser
 USER appuser
 
-# Copy the executable from the "build" stage.
+# Copy the executable and config from the "build" stage.
 COPY --from=build /bin/server /bin/
+COPY --from=build /bin/server_config.json /bin/
 
 # Expose the port that the application listens on.
 EXPOSE 5001
 
 # What the container should run when it is started.
+WORKDIR /bin/
 CMD ["/bin/server"]
