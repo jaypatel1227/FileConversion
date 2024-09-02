@@ -2,13 +2,12 @@ mod converters;
 mod service;
 use actix_files::Files;
 use actix_multipart::Multipart;
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, post, web, App, HttpResponse, HttpResponseBuilder, HttpServer, Responder};
 
 #[get("/available_options")]
 async fn get_options() -> impl Responder {
     HttpResponse::Ok()
-        .insert_header(("Access-Control-Allow-Origin", "*")) // to stop CORS error when running the
-        // site and service from the same domain (such as localhost)
+        .conditionally_compiled_settings()
         .json(service::get_server_config())
 }
 
@@ -16,21 +15,21 @@ async fn get_options() -> impl Responder {
 async fn convert_file(path: web::Path<String>, payload: Multipart) -> impl Responder {
     let resp = service::convert_file_core(path, payload).await;
     HttpResponse::Ok()
-        .insert_header(("Access-Control-Allow-Origin", "*"))
+        .conditionally_compiled_settings()
         .json(resp.unwrap())
 }
 
 #[post("/echo")]
 async fn echo(req_body: String) -> impl Responder {
     HttpResponse::Ok()
-        .insert_header(("Access-Control-Allow-Origin", "*"))
+        .conditionally_compiled_settings()
         .body(req_body)
 }
 
 #[get("/stats")]
 async fn get_stats(req_body: String) -> impl Responder {
     HttpResponse::Ok()
-        .insert_header(("Access-Control-Allow-Origin", "*"))
+        .conditionally_compiled_settings()
         .json(service::service_stats(req_body).await)
 }
 
@@ -47,4 +46,19 @@ async fn main() -> std::io::Result<()> {
     .bind(("0.0.0.0", 5001))?
     .run()
     .await
+}
+
+// used to add additional methods for the HttpResponseBuilder type
+trait HttpRespUtils {
+    fn conditionally_compiled_settings(&mut self) -> &mut Self;
+}
+
+impl HttpRespUtils for HttpResponseBuilder {
+    // include override for CORS when debugging locally, but do not when running in optimized build
+    fn conditionally_compiled_settings(&mut self) -> &mut Self {
+        if cfg!(debug_assertions) {
+            return self.insert_header(("Access-Control-Allow-Origin", "*"));
+        }
+        self
+    }
 }
