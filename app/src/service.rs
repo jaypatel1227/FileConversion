@@ -1,6 +1,6 @@
 use crate::converters;
 use actix_multipart::Multipart;
-use actix_web::{web, Error, HttpResponse, Result};
+use actix_web::{web, Error, Result};
 use futures::{StreamExt, TryStreamExt};
 use serde::{Deserialize, Serialize};
 use std::fs;
@@ -23,9 +23,16 @@ pub struct AvialableService {
 }
 
 #[derive(Debug, Serialize)]
-struct ConversionResponse {
+pub struct ConversionResponse {
     file_name: String,
     success: bool,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct ServerStats {
+    inp_file_count: u32,
+    out_file_count: u32,
+    tot_file_size: u64,
 }
 
 pub fn get_server_config() -> ServerConfig {
@@ -39,11 +46,68 @@ pub fn get_server_config() -> ServerConfig {
     return json;
 }
 
+pub async fn service_stats(_req_body: String) -> ServerStats {
+    ServerStats {
+        tot_file_size: 100,
+        inp_file_count: 10,
+        out_file_count: 10,
+    }
+}
+
 pub async fn convert_file_core(
     path: web::Path<String>,
     mut payload: Multipart,
-) -> Result<HttpResponse, Error> {
-    let mut filename = "".to_string();
+) -> Result<ConversionResponse, Error> {
+    // do onetime file creation
+    let mut done_intialization: bool = false;
+    let mut file: Option<std::fs::File> = None;
+    let mut file_name: String = "".to_string();
+
+    // stream pieces of the file that the user is uploading
+    while let Ok(Some(mut field)) = payload.try_next().await {
+        // make sure it is actally a file!
+        let field_type = field.content_disposition().get_name().unwrap();
+        if field_type != "file" {
+            continue;
+        }
+
+        // do the one time initialization
+        if !done_intialization {
+            file_name =
+                clean_file_name(field.content_disposition().get_filename().unwrap()).to_string();
+            file = Some(initialize_input(file_name.clone()).await?);
+            done_intialization = true;
+        }
+
+        // grab the next chunk of data
+        while let Some(chunk) = field.next().await {
+            let data = chunk.unwrap();
+            if file.is_none() {
+                // shouldn't be possible but in case initialization of file failed
+                continue;
+            } else {
+                // filesystem operations are blocking, we have to use thread pool
+                file = Some(
+                    web::block(move || {
+                        file.as_mut()
+                            .unwrap()
+                            //.expect("Error reading the file.")
+                            .write_all(&data)
+                            .map(|_| file.unwrap())
+                    })
+                    .await
+                    .unwrap()
+                    .expect("Error writing the data to server."),
+                );
+            }
+        }
+    }
+
+    // once we have to file, do the conversion!
+    Ok(do_conversion(path, file_name)?)
+}
+
+pub fn clean_file_name(unclean_file_name: &str) -> String {
     let time_stamp = format!(
         "{}",
         SystemTime::now()
@@ -51,40 +115,27 @@ pub async fn convert_file_core(
             .unwrap()
             .as_micros()
     );
+    format!(
+        "{}-{}",
+        time_stamp,
+        sanitize_filename::sanitize(unclean_file_name)
+    )
+}
 
-    while let Ok(Some(mut field)) = payload.try_next().await {
-        let field_type = field.content_disposition().get_name().unwrap();
-        if field_type != "file" {
-            continue;
-        }
-        filename = format!(
-            "{}-{}",
-            time_stamp,
-            sanitize_filename::sanitize(field.content_disposition().get_filename().unwrap())
-        );
+pub async fn initialize_input(file_name: String) -> Result<File, Box<dyn std::error::Error>> {
+    fs::create_dir_all("./input/")?;
+    let filepath = format!("{}{}", "./input/", &file_name);
+    // File::create is blocking operation, use thread pool
+    let f = web::block(|| std::fs::File::create(filepath))
+        .await
+        .unwrap()?;
+    Ok(f)
+}
 
-        fs::create_dir_all("./input/")?;
-        let filepath = format!("{}{}", "./input/", sanitize_filename::sanitize(&filename));
-        // File::create is blocking operation, use thread pool
-        let mut f = web::block(|| std::fs::File::create(filepath))
-            .await
-            .unwrap();
-
-        // Field in turn is stream of *Bytes* object
-        while let Some(chunk) = field.next().await {
-            let data = chunk.unwrap();
-            // filesystem operations are blocking, we have to use thread pool
-            f = web::block(move || {
-                f.as_mut()
-                    .expect("Error reading the file.")
-                    .write_all(&data)
-                    .map(|_| f)
-            })
-            .await?
-            .expect("Error when writing the data.");
-        }
-    }
-
+pub fn do_conversion(
+    path: web::Path<String>,
+    file_name: String,
+) -> Result<ConversionResponse, Box<dyn std::error::Error>> {
     let conversion_type = path.into_inner();
     let matching_service = get_server_config()
         .available_services
@@ -92,12 +143,17 @@ pub async fn convert_file_core(
         .find(|s| s.name == conversion_type);
 
     match matching_service {
-        None => return Ok(HttpResponse::BadRequest().body("Invalid Conversion Request!")),
+        None => {
+            return Ok(ConversionResponse {
+                file_name: "".to_string(),
+                success: false,
+            })
+        }
         Some(service_info) => {
             fs::create_dir_all("./output/")?;
             let converted_file = converters::call(
                 service_info.service_func_name,
-                format!("{}{}", "./input/", filename),
+                format!("{}{}", "./input/", file_name),
             )
             .unwrap();
 
@@ -107,9 +163,7 @@ pub async fn convert_file_core(
                 success: true,
             };
 
-            return Ok(HttpResponse::Ok()
-                .insert_header(("Access-Control-Allow-Origin", "*"))
-                .json(resp));
+            return Ok(resp);
         }
     }
 }

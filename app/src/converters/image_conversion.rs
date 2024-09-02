@@ -1,4 +1,4 @@
-use image::io::Reader as ImageReader;
+use image::ImageReader;
 use image_convert::{BMPConfig, GIFConfig, ICOConfig, ImageResource, JPGConfig, PNGConfig};
 use std::path::PathBuf;
 
