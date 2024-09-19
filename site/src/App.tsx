@@ -32,7 +32,7 @@ const MainContent: React.FC = () => {
   const [selectorMode, setSelectorMode] = useState<boolean>(false);
   useEffect(() => {
     Utils.fetchServices({ setServices });
-  }, [services]);
+  }, []);
 
   if (services.is_unavailable) {
     return (
