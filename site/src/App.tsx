@@ -1,11 +1,11 @@
-import React, { SetStateAction } from 'react'
-import { useEffect, useState } from 'react'
+import React, { SetStateAction } from "react"
+import { useEffect, useState } from "react"
 import { CardTable } from "./CardTable";
 import { ISelectorModeParams, SelectorMode } from "./SelectorMode";
 import * as Utils from "./Utils";
 import "./App.css";
 
-export const API_URL = 'http://localhost:5001/';
+export const API_URL = "http://192.168.1.101:5001/";
 
 function App() {
   return (
@@ -19,9 +19,9 @@ export interface IUnavailableServiceParams {
 
 const UnavailableServices: React.FC<IUnavailableServiceParams> = (props) => {
   return (
-    <div className='_appHeader _unavaiblableService'>
+    <div className="_appHeader _unavaiblableService">
       <div> The file conversion service appears to be down. Please try again later. </div>
-      <button className='_button' onClick={() => props.setServices({})}>Try Again</button>
+      <button className="_button" onClick={() => props.setServices({})}>Try Again</button>
     </div>
   );
 };
@@ -42,7 +42,7 @@ const MainContent: React.FC = () => {
 
   return (
     <div>
-      <div className='_appHeader'> {services.service_name}</div>
+      <div className="_appHeader"> {services.service_name}</div>
       <HeaderBar searchTerm={searchTerm} outputSearchTerm={setSearchTerm} selectorMode={selectorMode} setSelectorMode={setSelectorMode} setServices={setServices} />
       {selectorMode ? <SelectorMode services={services} /> :
         <CardTable cards={services.available_services ?? []} searchFilter={searchTerm} />
@@ -61,14 +61,14 @@ interface IHeaderBarParams {
 
 const HeaderBar: React.FC<IHeaderBarParams> = (props: IHeaderBarParams) => {
   return (
-    <div>
-      <input type='text' placeholder='🔍' value={props.searchTerm} onChange={(e) => e.isTrusted ? props.outputSearchTerm(e.target.value) : null} name='filter' />
+    <div className="_serviceGrid">
+      <input type="text" className="" placeholder="🔍" value={props.searchTerm} onChange={(e) => e.isTrusted ? props.outputSearchTerm(e.target.value) : null} name="filter" />
       {!!props.searchTerm ?
-        <button onClick={() => props.outputSearchTerm('')} >❌</button>
+        <button onClick={() => props.outputSearchTerm("")} >❌</button>
         : null
       }
-      <button className='_button' onClick={() => props.setServices({})}>Clear</button>
-      <button className='_button' onClick={() => props.setSelectorMode(!props.selectorMode)}>{props.selectorMode ? 'All Options' : 'Selector Mode'}</button>
+      <button className="_button" onClick={() => props.setServices({})}>Clear</button>
+      <button className="_button" onClick={() => props.setSelectorMode(!props.selectorMode)}>{props.selectorMode ? "All Options" : "Selector Mode"}</button>
     </div>
   );
 }

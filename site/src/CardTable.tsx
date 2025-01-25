@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ConvertRequestButton } from './ConvertRequestButton'
+import React, { useState } from "react";
+import { ConvertRequestButton } from "./ConvertRequestButton"
 
 export interface ICardProps {
   name: string;
@@ -13,12 +13,12 @@ const Card: React.FC<ICardProps> = (props) => {
   let { name, description, fileExtension, postRequestURL } = props;
 
   return (
-    <div className='_container'>
-      <div className='_cardTitle'> {name} </div>
-      <div className='_flexBreak'> </div>
-      <div className='_cardDescription'> {description} </div>
-      <div className='_flexBreak'> </div>
-      <div className='_formArea' hidden={waiting}>
+    <div className="_container">
+      <div className="_cardTitle"> {name} </div>
+      <div className="_flexBreak"> </div>
+      <div className="_cardDescription"> {description} </div>
+      <div className="_flexBreak"> </div>
+      <div className="_formArea" hidden={waiting}>
         <ConvertRequestButton name={name} fileExtension={fileExtension} postRequestURL={postRequestURL} setWaiting={setWaiting} />
       </div>
       <div hidden={!waiting}>
@@ -38,7 +38,7 @@ const CardRow: React.FC<ICardRowProps> = (props) => {
   return (
     <>
       {props.cards.map((card, index) => (
-        <td key={index + props.initialIndex} className='_cardItem'>
+        <td key={index + props.initialIndex} className="_cardItem">
           <Card name={card.name} description={card.description} fileExtension={card.fileExtension} postRequestURL={card.postRequestURL} />
         </td>
       ))}
@@ -68,10 +68,10 @@ export const CardTable: React.FC<ICardTableProps> = (props: ICardTableProps) => 
   }, []);
 
   return (
-    <table className='_serviceGrid'>
+    <table className="_serviceGrid">
       <tbody>
         {groupedCards?.map((group, index) => (
-          <tr className='_tableRow'>
+          <tr className="_tableRow">
             <CardRow cards={group} initialIndex={index * NUM_COLS} />
           </tr>
         ))}

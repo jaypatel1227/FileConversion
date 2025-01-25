@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { API_URL } from './App';
+import React, { useState } from "react";
+import { API_URL } from "./App";
 
 interface IConvertRequestButtonProps {
   name: string;
@@ -23,13 +23,13 @@ export const ConvertRequestButton: React.FC<IConvertRequestButtonProps> = (props
 
     try {
       setTimeout(() => props.setWaiting(true), 200); // display the wait graphics
-      // show the waiting stuff after 100 ms so that we avoid flashing, if the response is quick don't need to show this waiting stuff
+      // show the waiting stuff after 100 ms so that we avoid flashing, if the response is quick don"t need to show this waiting stuff
 
       const formData = new FormData();
-      formData.append('file', file ?? '');
+      formData.append("file", file ?? "");
 
       let response = fetch(props.postRequestURL, {
-        method: 'POST',
+        method: "POST",
         body: formData,
       });
 
@@ -40,14 +40,14 @@ export const ConvertRequestButton: React.FC<IConvertRequestButtonProps> = (props
           const data = await resp.json();
           setResponseData(data);
         } else {
-          console.error('Request failed:', resp);
+          console.error("Request failed:", resp);
         }
         props.setWaiting(false); // done waiting
       });
 
     } catch (error) {
-      console.error('Error sending request:', error);
-      props.setWaiting(false); // clean up wadone waitingiting flag
+      console.error("Error sending request:", error);
+      props.setWaiting(false); // clean up waiting flag
     }
   };
 
@@ -67,15 +67,15 @@ export const ConvertRequestButton: React.FC<IConvertRequestButtonProps> = (props
         </div>
         :
         <form>
-          <label htmlFor={'fileinput_' + props.name}>
+          <label htmlFor={"fileinput_" + props.name}>
             <input
               type="file"
               accept={props.fileExtension}
               onChange={handleFileChange}
             />
           </label>
-          <div className='_flexBreak'> </div>
-          <button className='_button _centerVert' disabled={!file} type="submit" onClick={handleSubmit}>Submit</button>
+          <div className="_flexBreak"> </div>
+          <button className="_button _centerVert" disabled={!file} type="submit" onClick={handleSubmit}>Submit</button>
         </form>}
     </div>
   );
