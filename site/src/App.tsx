@@ -62,7 +62,7 @@ interface IHeaderBarParams {
 const HeaderBar: React.FC<IHeaderBarParams> = (props: IHeaderBarParams) => {
   return (
     <div className="_serviceGrid">
-      <input type="text" className="" placeholder="🔍" value={props.searchTerm} onChange={(e) => e.isTrusted ? props.outputSearchTerm(e.target.value) : null} name="filter" />
+      <input type="text" placeholder="🔍" value={props.searchTerm} onChange={(e) => e.isTrusted ? props.outputSearchTerm(e.target.value) : null} name="filter" />
       {!!props.searchTerm ?
         <button onClick={() => props.outputSearchTerm("")} >❌</button>
         : null
