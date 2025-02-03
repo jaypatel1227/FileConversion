@@ -43,7 +43,7 @@ const MainContent: React.FC = () => {
   return (
     <div>
       <div className="_appHeader"> {services.service_name}</div>
-      <HeaderBar searchTerm={searchTerm} outputSearchTerm={setSearchTerm} selectorMode={selectorMode} setSelectorMode={setSelectorMode} setServices={setServices} />
+      <HeaderBar searchTerm={searchTerm} outputSearchTerm={setSearchTerm} selectorMode={selectorMode} setSelectorMode={setSelectorMode} setSearchTerm={setSearchTerm} />
       {selectorMode ? <SelectorMode services={services} /> :
         <CardTable cards={services.available_services ?? []} searchFilter={searchTerm} />
       }
@@ -56,21 +56,26 @@ interface IHeaderBarParams {
   outputSearchTerm: React.Dispatch<SetStateAction<string>>,
   selectorMode: boolean,
   setSelectorMode: React.Dispatch<SetStateAction<boolean>>,
-  setServices: React.Dispatch<SetStateAction<Utils.IServices>>,
+  setSearchTerm: React.Dispatch<SetStateAction<string>>,
 }
 
 const HeaderBar: React.FC<IHeaderBarParams> = (props: IHeaderBarParams) => {
   return (
     <div className="_serviceGrid">
-      <input type="text" placeholder="🔍" value={props.searchTerm} onChange={(e) => e.isTrusted ? props.outputSearchTerm(e.target.value) : null} name="filter" />
+      <input className="_searchBox" type="text" placeholder="🔍" value={props.searchTerm} onChange={(e) => e.isTrusted ? props.outputSearchTerm(e.target.value) : null} name="filter" />
       {!!props.searchTerm ?
-        <button onClick={() => props.outputSearchTerm("")} >❌</button>
+        <button className="_button" onClick={() => props.outputSearchTerm("")} >❌</button>
         : null
       }
-      <button className="_button" onClick={() => props.setServices({})}>Clear</button>
       <button className="_button" onClick={() => props.setSelectorMode(!props.selectorMode)}>{props.selectorMode ? "All Options" : "Selector Mode"}</button>
     </div>
   );
+}
+
+interface ISelectorParams {
+  options: Utils.IServices[],
+  filter_predicate: (service: Utils.IServices) => boolean,
+  setSelection: React.Dispatch<SetStateAction<Utils.IServices>>,
 }
 
 export default App;

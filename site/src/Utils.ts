@@ -10,9 +10,9 @@ export interface IServices {
 export function buildAdditionalCardInformation(resp: IServices) {
   resp.available_services?.forEach((service) => {
     // extract the file extension from the service name
-    service.fileExtension = service.name.split("To")[0].toLowerCase();
+    service.from_extension = service.name.split("To")[0].toLowerCase();
     // the URL for the post request
-    service.postRequestURL = API_URL + "convert_file/" + service.name + "/";
+    service.post_request_url = API_URL + "convert_file/" + service.name + "/";
   });
   return resp;
 }

@@ -10,9 +10,11 @@ export const SelectorMode: React.FC<ISelectorModeParams> = (props) => {
   let [to, setTo] = useState<string>("");
 
   return (
-    <div>
-      <input type="text" placeholder="🔍" value={from} onChange={(e) => setFrom(e.target.value)} />
-      <input type="text" placeholder="🔍" value={to} onChange={(e) => setTo(e.target.value)} />
+    <div className="_selectorMode">
+      <div> From: </div>
+      <input className="_selectionBox" type="text" placeholder="🔍" value={from} onChange={(e) => setFrom(e.target.value)} />
+      <div> To: </div>
+      <input className="_selectionBox" type="text" placeholder="🔍" value={to} onChange={(e) => setTo(e.target.value)} />
     </div>
   );
 }

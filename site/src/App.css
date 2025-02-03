@@ -1,3 +1,17 @@
+input[type="text"] {
+  padding: 5px;
+  border: 2px solid #222;
+  border-radius: 10px;
+  background-color: #ddd;
+  font-size: 16px;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #111;
+  background-color: #eee;
+}
+
 ._appHeader {
   background-image: linear-gradient(#020e26, #282c34);
   /* background-color: #282c34; */
@@ -9,6 +23,11 @@
   font-size: calc(10px + 2vmin);
   color: white;
   margin-bottom: 10px;
+}
+
+._searchBox {
+  width: 25vw;
+  min-width: 100px;
 }
 
 ._serviceGrid {
@@ -25,20 +44,6 @@
 
 ._tableRow {
   display: flex;
-}
-
-input[type="text"] {
-  padding: 5px;
-  border: 2px solid #222;
-  border-radius: 10px;
-  background-color: #ddd;
-  font-size: 16px;
-}
-
-input[type="text"]:focus {
-  outline: none;
-  border-color: #111;
-  background-color: #eee;
 }
 
 ._cardTitle {
@@ -105,4 +110,19 @@ input::file-selector-button:hover {
 
 ._centerVert {
   vertical-align: middle;
+}
+
+._selectorMode {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+._selectionBox {
+  width: 20vw;
+  min-width: 50px;
+  margin-right: 10vw;
+  margin-left: min(2vw,10px);
+
 }

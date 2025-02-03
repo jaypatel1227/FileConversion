@@ -3,8 +3,8 @@ import { API_URL } from "./App";
 
 interface IConvertRequestButtonProps {
   name: string;
-  fileExtension: string;
-  postRequestURL: string;
+  from_extension: string;
+  post_request_url: string;
   setWaiting: (val: boolean) => void;
 }
 
@@ -28,7 +28,7 @@ export const ConvertRequestButton: React.FC<IConvertRequestButtonProps> = (props
       const formData = new FormData();
       formData.append("file", file ?? "");
 
-      let response = fetch(props.postRequestURL, {
+      let response = fetch(props.post_request_url, {
         method: "POST",
         body: formData,
       });
@@ -70,7 +70,7 @@ export const ConvertRequestButton: React.FC<IConvertRequestButtonProps> = (props
           <label htmlFor={"fileinput_" + props.name}>
             <input
               type="file"
-              accept={props.fileExtension}
+              accept={props.from_extension}
               onChange={handleFileChange}
             />
           </label>
