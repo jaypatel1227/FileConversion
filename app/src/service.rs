@@ -59,7 +59,7 @@ pub async fn convert_file_core(
     mut payload: Multipart,
 ) -> Result<ConversionResponse, Error> {
     // do onetime file creation
-    let mut done_intialization: bool = false;
+    let mut done_initialization: bool = false;
     let mut file: Option<std::fs::File> = None;
     let mut file_name: String = "".to_string();
 
@@ -72,11 +72,11 @@ pub async fn convert_file_core(
         }
 
         // do the one time initialization
-        if !done_intialization {
+        if !done_initialization {
             file_name =
                 clean_file_name(field.content_disposition().get_filename().unwrap()).to_string();
             file = Some(initialize_input(file_name.clone()).await?);
-            done_intialization = true;
+            done_initialization = true;
         }
 
         // grab the next chunk of data
