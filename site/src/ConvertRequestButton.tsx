@@ -63,7 +63,7 @@ export const ConvertRequestButton: React.FC<IConvertRequestButtonProps> = (props
         <div>
           Received JSON data:
           <pre>{JSON.stringify(responseData, null, 2)}</pre>
-          Go here to get your file: <a href={API_URL + responseData.file_name!!}>Download</a>
+          Go here to get your file: <a href={API_URL + (responseData.file_name ?? "")}>Download</a>
         </div>
         :
         <form>
